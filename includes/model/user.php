@@ -1,5 +1,7 @@
 <?php
-    if (strstr($_SERVER["PHP_SELF"], "/model/")) die ("Istighfar, jangan di hack. Makasih :)");
+    /**
+     * Merepresentasikan pengguna aplikasi QR code payment
+     */
     class User{
         private $id_user;
         private $email_address;

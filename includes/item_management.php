@@ -2,6 +2,7 @@
     include_once('config.php');
     include_once('model/item.php');
 
+    // Mengambil barang-barang merchant berdasarkan id merchant
     function getMerchantItems($id_merchant){
         $item_list = array();
 
@@ -30,6 +31,7 @@
         return $item_list;
     }
 
+    // Mengambil satu barang berdasarkan id barang
     function getItem($id_barang){
         $query = "SELECT id_barang, nama_barang, harga, stok FROM barang WHERE id_barang = :id_barang LIMIT 1";
 
@@ -59,6 +61,7 @@
 
     }
 
+    // Menambah barang merchant
     function addItem($id_barang, $nama_barang, $harga, $stok, $id_merchant){
         $core = Core::getInstance();
 

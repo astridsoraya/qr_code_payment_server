@@ -1,4 +1,8 @@
 <?php
+/**
+ * Merepresentasikan detil pembayaran yang dibentuk
+ * setelah pelanggan melakukan scanning QR code
+ */
     class Payment{
         private $id_payment;
         private $waktu_bayar;

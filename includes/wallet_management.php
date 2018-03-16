@@ -1,9 +1,9 @@
 <?php
-    if (strstr($_SERVER["PHP_SELF"], "/includes/")) die ("Istighfar, jangan di hack. Makasih :)");
     include_once('config.php');
     include_once('session.php');
     include_once('model/wallet.php');
 
+    // Mengambil wallet
     function createWallet($pin, $email_address, $user_type){
         $core = Core::getInstance();
         $id_wallet = date('ymdHis') . mt_rand(1000, 9999); // 16 karakter
@@ -50,6 +50,7 @@
         }
     }
 
+    // Melakukan login wallet saat mengkonfirmasi pembayaran
     function loginWallet($id_user, $tempPin){
       $core = Core::getInstance();
 

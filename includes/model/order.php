@@ -1,4 +1,8 @@
 <?php
+/**
+ * Merepresentasikan pesanan yang dibuat saat pelanggan
+ * memesan barang
+ */
     class Order{
         private $id_order;
         private $waktu_order;

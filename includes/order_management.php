@@ -5,6 +5,7 @@
     include_once('model/merchant.php');
     include_once('model/customer.php');
 
+    // Mengambil satu order berdasarkan id order
     function getOrder($id_order){
         $core = Core::getInstance();
 
@@ -26,6 +27,8 @@
         return $order;
     }
 
+    // Mengambil detil order barang yang dimiliki oleh seorang merchant 
+    // Khusus digunakan saat pelanggan melakukan scanning QR code
     function getOrderItems($id_order){
         $core = Core::getInstance();
 
@@ -68,6 +71,8 @@
 
     }
 
+    // Mengambil pesanan yang sudah dibuat oleh seorang customer
+    // Pesanan diambil berdasarkan id customer
     function getAllOrderCustomer($id_customer){
         $core = Core::getInstance();
         // Tabel Order di inner join sama Tabel Order items daaaan tabel Barang untuk mendapatkan nama barang (done)
@@ -141,6 +146,8 @@
         }
     }
 
+    // Mengambil semua pesanan yang dimiliki oleh satu merchant
+    // Dapat ditunjukkan apakah pesanan sudah dibayar atau belum
     function getAllOrderMerchant($id_merchant){
         $core = Core::getInstance();
 
@@ -209,11 +216,14 @@
         }
     }
 
+    // Menambah pesanan dengan parameter id merchant
     function addOrder($id_merchant){
         $core = Core::getInstance();
 
         $length = 5;
         $addition = "";
+        
+        // membangkitkan 5 karakter secara acak
         $characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
         $max = count($characters) - 1;
         for ($i = 0; $i < $length; $i++) {
@@ -244,6 +254,7 @@
         }
     }
 
+    // Menambah order items yang menunjukkan kuantitas barang yang dipesan
     function addOrderItems($id_order, $id_barang, $kuantitas){
         $core = Core::getInstance();
 
@@ -265,6 +276,8 @@
         }
     }
 
+    // Mengupdate informasi pesanan dari belum dibayar
+    // menjadi sudah dibayar
     function updateCustomerOrder($id_order, $id_customer){
       $core = Core::getInstance();
 

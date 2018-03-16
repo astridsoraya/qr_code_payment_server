@@ -5,6 +5,8 @@
   include_once('model/payment.php');
   include_once('order_management.php');
 
+  // Menambah pembayaran yang dilakukan saat pelanggan melakukan
+  // konfirmasi pembayaran
   function insertPayment($id_order, $id_customer){
       $core = Core::getInstance();
 
@@ -44,6 +46,7 @@
       }
     }
 
+    // Mendapatkan pembayaran berdasarkan id order
     function getPaymentByOrder($id_order){
         $core = Core::getInstance();
         $query = "SELECT `id_payment`, `waktu_bayar`, `id_customer`, `id_merchant` FROM `payment` WHERE `id_order` = :id_order";

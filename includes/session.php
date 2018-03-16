@@ -4,6 +4,7 @@
     include_once('model/merchant.php');
     include_once('model/customer.php');
 
+    // Meregistrasi customer
     function registerCustomer($first_name, $last_name, $email_address, $password, $no_handphone){
         $core = Core::getInstance();
         if(getCustomer($email_address) == null){
@@ -38,6 +39,7 @@
         }
     }
 
+    // Meregistrasi merchant
     function registerMerchant($merchant_name, $email_address, $password, $address, $no_handphone){
         $core = Core::getInstance();
         if(getMerchant($email_address) == null){
@@ -72,6 +74,7 @@
         }
     }
 
+    //Melakukan login
     function login($email_address, $temp_password) {
         $customer = getCustomer($email_address);
         $merchant = getMerchant($email_address);
@@ -97,6 +100,7 @@
         }
     }
 
+    // Mengambil merchant dengan parameter email address
     function getMerchant($email_address){
         $core = Core::getInstance();
         if ($stmt = $core->dbh->prepare("SELECT id_merchant, merchant_name, email_address, password, address, handphone_number, digital_certificate FROM merchant WHERE email_address = :email_address LIMIT 1")) {
@@ -126,6 +130,7 @@
 
     }
 
+    // Mengambil merchant berdasarkan id merchant
     function getMerchantByID($id_merchant){
         $core = Core::getInstance();
         if ($stmt = $core->dbh->prepare("SELECT id_merchant, merchant_name, email_address, password, address, handphone_number, digital_certificate FROM merchant WHERE id_merchant = :id_merchant LIMIT 1")) {
@@ -154,6 +159,7 @@
         }
     }
 
+    // Mengambil customer dengan parameter email address
     function getCustomer($email_address){
         $core = Core::getInstance();
         if ($stmt = $core->dbh->prepare("SELECT id_customer, first_name, last_name, email_address, password, handphone_number, digital_certificate FROM customer WHERE email_address = :email_address LIMIT 1")) {
@@ -183,6 +189,7 @@
 
     }
 
+    // Mengambil customer dengan parameter id customer
     function getCustomerByID($id_customer){
         $core = Core::getInstance();
         if ($stmt = $core->dbh->prepare("SELECT id_customer, first_name, last_name, email_address, password, handphone_number, digital_certificate FROM customer WHERE id_customer = :id_customer LIMIT 1")) {

@@ -1,6 +1,10 @@
 <?php
-    if (strstr($_SERVER["PHP_SELF"], "/model/")) die ("Istighfar, jangan di hack. Makasih :)");
     include_once('user.php');
+
+    /**
+     * Class Customer merepresentasikan pelanggan yang merupakan 
+     * kelas turunan dari User
+     */
 
     class Customer extends User{
         private $first_name;

@@ -1,4 +1,7 @@
 <?php
+/**
+ * Merepresentasikan e-wallet yang dimiliki oleh pelanggan
+ */
     class Wallet{
       private $id_wallet;
       private $saldo;

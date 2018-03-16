@@ -1,7 +1,9 @@
 <?php
-    if (strstr($_SERVER["PHP_SELF"], "/model/")) die ("Istighfar, jangan di hack. Makasih :)");
     include_once('user.php');
-
+    
+/**
+ * Merepresentasikan merchant yang menjual barang
+ */
     class Merchant extends User{
         private $merchant_name;
         private $address;

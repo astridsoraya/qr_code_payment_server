@@ -1,4 +1,10 @@
 <?php
+
+    /**
+     * Class item merepresentasikan barang yang dijual
+     * oleh merchant
+     */
+
     class Item{
         private $id_barang;
         private $nama_barang;

@@ -1,8 +1,4 @@
 <?php 
-//securing include file from direct access
-if (strstr($_SERVER["PHP_SELF"], "/includes/")) {
-    die ("Istighfar, jangan di hack. Makasih :)");
-}
 
 /*
 This config for configuration file for admin.
