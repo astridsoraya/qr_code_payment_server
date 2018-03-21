@@ -4,13 +4,15 @@
      */
     class User{
         private $id_user;
+        private $username;
         private $email_address;
         private $password;
         private $handphone_number;
         private $digital_certificate;
 
-        function __construct($id_user, $email_address, $password, $handphone_number, $digital_certificate){
+        function __construct($id_user, $username, $email_address, $password, $handphone_number, $digital_certificate){
             $this->id_user = $id_user;
+            $this->username = $username;
             $this->email_address = $email_address;
             $this->password = $password;
             $this->handphone_number = $handphone_number;
@@ -19,6 +21,10 @@
 
         function getIdUser(){
             return $this->id_user;
+        }
+
+        function getUsername(){
+            return $this->username;
         }
 
         function getEmailAddress(){

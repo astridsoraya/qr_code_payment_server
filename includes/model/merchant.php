@@ -8,8 +8,8 @@
         private $merchant_name;
         private $address;
 
-        function __construct($id_merchant, $merchant_name, $email_address, $password, $address, $handphone_number, $digital_certificate){
-            parent::__construct($id_merchant, $email_address, $password, $handphone_number, $digital_certificate);
+        function __construct($id_merchant, $username, $merchant_name, $email_address, $password, $address, $handphone_number, $digital_certificate){
+            parent::__construct($id_merchant, $username, $email_address, $password, $handphone_number, $digital_certificate);
             $this->merchant_name = $merchant_name;
             $this->address = $address;
         }
