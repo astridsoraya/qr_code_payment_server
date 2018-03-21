@@ -11,7 +11,7 @@
         $email_address = filter_input(INPUT_POST, 'email_address', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'];
         $userByEmail = loginByEmail($email_address, $password);
-        $userByUsername = loginByEmail($email_address, $password);
+        $userByUsername = loginByUsername($username, $password);
 
         if ($userByEmail != null) {
             // Login success
