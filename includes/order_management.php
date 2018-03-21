@@ -328,16 +328,12 @@
       $core = Core::getInstance();
 
       $query = "UPDATE `order` SET `id_customer`= :id_customer WHERE `id_order`= :id_order";
-        
-      $core->pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
-
 
       if($update_stmt = $core->dbh->prepare($query)){
           $update_stmt->bindParam('id_customer', $id_customer);
           $update_stmt->bindParam('id_order', $id_order);
 
           if(!$update_stmt->execute()){
-            print_r($update->errorInfo());
               return false;
           }
           else{

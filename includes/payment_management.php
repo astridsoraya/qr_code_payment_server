@@ -72,48 +72,4 @@
         return $payment;
     }
 
-    function verifyQRCodeDataCustomer($id_order){
-        $core = Core::getInstance();
-        
-        $order_items_list = array();
-        $query = "SELECT `order`.`id_order`, `id_customer`, `nama_barang`, `harga`, `kuantitas` FROM `order`
-        INNER JOIN `order_items` ON `order`.`id_order` = `order_items`.`id_order` INNER JOIN `barang`
-        ON `order_items`.`id_barang` = `barang`.`id_barang` WHERE `order`.`id_order` = :id_order";
-
-        if ($stmt = $core->dbh->prepare($query)){
-            $stmt->bindParam('id_order', $id_order);
-            $stmt->execute();
-            $order_items = $stmt->fetchAll(PDO::FETCH_NUM);
-
-           foreach($order_items as $order_item){
-                $id_order = $order_item[0];
-                $id_customer = $order_item[1];
-                $nama_barang = $order_item[2];
-                $harga = $order_item[3];
-                $kuantitas = $order_item[4];
-
-                $customer = getCustomerByID($id_customer);
-                $customer_username = $customer->getUsername();
-                $customer_name = $customer->getFirstName() . " " . $customer->getLastName();
-                $digital_certificate_customer = $customer->getDigitalCertificate();
-
-                array_push($order_items_list, array(
-                    "id_order" => $id_order,
-                    "customer_name" => $customer_name,
-                    "customer_username" => $customer_username,
-                    "nama_barang" => $nama_barang,
-                    "harga" => $harga,
-                    "kuantitas" => $kuantitas,
-                    "digital_certificate_customer" => $digital_certificate_customer));
-            }
-            return $order_items_list;
-        }
-        else{
-            return null;
-        }
-
-        $merchant = getMerchantByID($id_merchant);
-        $merchant_name = $merchant->getMerchantName();
-        $digital_certificate_merchant = $merchant->getDigitalCertificate();
-    }
  ?>
