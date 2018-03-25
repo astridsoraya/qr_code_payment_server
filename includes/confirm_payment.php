@@ -40,32 +40,6 @@
           echo json_encode($response);
         }
     }
-    else if(isset($_POST['id_merchant'], $_POST['id_order'])){
-        $id_merchant = $_POST['id_merchant'];
-        $id_order = $_POST['id_order'];
-
-        $wallet = loginWallet($id_customer, $pin);
-
-            if(getPaymentByOrder($id_order) == null){
-                if(updateMerchantPayment($id_order, $id_merchant)){
-					
-                  $response['success'] = 1;
-                  $response['message'] = "Merchant is updated!";
-                  echo json_encode($response);
-
-                }
-                else{
-                  $response['success'] = 0;
-                  $response['message'] = "System failed to confirm payment.";
-                  echo json_encode($response);
-                }
-            }
-            else{
-                $response['success'] = 0;
-                $response['message'] = "The order has already been paid.";
-                echo json_encode($response);
-            }
-    }
     else{
       $response['success'] = 0;
       $response['message'] = "Fields are missing.";

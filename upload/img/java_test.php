@@ -1,3 +1,11 @@
 <?php
-    exec("java -jar binary_vc.jar secret_image.jpg auth_image.jpg");
+    function createShares($idOrder){
+        $script = "java jar/binary_vc.jar " . "create_shares " . $idOrder;
+        exec($script);
+    }
+
+    function reconstructSecretImage($idOrder){
+        $script = "java jar/binary_vc.jar " . "reconstruct " . $idOrder;
+        exec($script);
+    }
 ?>
