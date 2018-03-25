@@ -8,25 +8,22 @@
     $counter = 0;
     $id_merchant = "";
     $order = null;
-    if(isset($_POST['id_merchant'])){
-        $id_merchant = $_POST['id_merchant'];
 
-        $order = addOrder($id_merchant);
-        $id_order = $order->getIdOrder();
+    $order = addOrder();
+    $id_order = $order->getIdOrder();
 
-        if($order != null){
-            while(isset($_POST['id_barang_'.$counter], $_POST['kuantitas_'.$counter])){
-                $id_barang = $_POST['id_barang_'.$counter];
-                $kuantitas = $_POST['kuantitas_'.$counter];
+    if($order != null){
+        while(isset($_POST['id_barang_'.$counter], $_POST['kuantitas_'.$counter])){
+            $id_barang = $_POST['id_barang_'.$counter];
+            $kuantitas = $_POST['kuantitas_'.$counter];
 
-                if(!addOrderItems($id_order, $id_barang, $kuantitas)){
-                    $counter = 0;
-                    break;
-                }
+            if(!addOrderItems($id_order, $id_barang, $kuantitas)){
+                $counter = 0;
+                break;
+            }
 
-                else{
-                    $counter++;
-                }
+            else{
+                $counter++;
             }
         }
     }

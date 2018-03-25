@@ -2,6 +2,7 @@
     include_once('config.php');
     include_once('session.php');
     include_once('model/order.php');
+    include_once('model/user.php');
     include_once('model/merchant.php');
     include_once('model/customer.php');
 
@@ -29,7 +30,7 @@
 
     // Mengambil detil order barang yang dimiliki oleh seorang merchant 
     // Khusus digunakan saat pelanggan melakukan scanning QR code
-    function getOrderItems($id_order){
+    function verifyQRCodeDataMerchant($id_order){
         $core = Core::getInstance();
 
         $order_items_list = array();
@@ -53,7 +54,7 @@
 
                 $merchant = getMerchantByID($id_merchant);
                 $merchant_name = $merchant->getMerchantName();
-                $digital_certificate = $merchant->getDigitalCertificate();
+                $digital_certificate_merchant = $merchant->getDigitalCertificate();
 
                 array_push($order_items_list, array(
                     "id_order" => $id_order,
@@ -61,7 +62,7 @@
                     "nama_barang" => $nama_barang,
                     "harga" => $harga,
                     "kuantitas" => $kuantitas,
-                    "digital_certificate" => $digital_certificate));
+                    "digital_certificate_merchant" => $digital_certificate_merchant));
             }
             return $order_items_list;
         }
@@ -69,6 +70,51 @@
             return null;
         }
 
+    }
+
+    function verifyQRCodeDataCustomer($id_order){
+        $core = Core::getInstance();
+        
+        $order_items_list = array();
+        $query = "SELECT `order`.`id_order`, `id_customer`, `nama_barang`, `harga`, `kuantitas` FROM `order`
+        INNER JOIN `order_items` ON `order`.`id_order` = `order_items`.`id_order` INNER JOIN `barang`
+        ON `order_items`.`id_barang` = `barang`.`id_barang` WHERE `order`.`id_order` = :id_order";
+
+        if ($stmt = $core->dbh->prepare($query)){
+            $stmt->bindParam('id_order', $id_order);
+            $stmt->execute();
+            $order_items = $stmt->fetchAll(PDO::FETCH_NUM);
+
+           foreach($order_items as $order_item){
+                $id_order = $order_item[0];
+                $id_customer = $order_item[1];
+                $nama_barang = $order_item[2];
+                $harga = $order_item[3];
+                $kuantitas = $order_item[4];
+
+                $customer = getCustomerByID($id_customer);
+                $customer_username = $customer->getUsername();
+                $customer_name = $customer->getFirstName() . " " . $customer->getLastName();
+                $digital_certificate_customer = $customer->getDigitalCertificate();
+
+                array_push($order_items_list, array(
+                    "id_order" => $id_order,
+                    "customer_name" => $customer_name,
+                    "customer_username" => $customer_username,
+                    "nama_barang" => $nama_barang,
+                    "harga" => $harga,
+                    "kuantitas" => $kuantitas,
+                    "digital_certificate_customer" => $digital_certificate_customer));
+            }
+            return $order_items_list;
+        }
+        else{
+            return null;
+        }
+
+        $merchant = getMerchantByID($id_merchant);
+        $merchant_name = $merchant->getMerchantName();
+        $digital_certificate_merchant = $merchant->getDigitalCertificate();
     }
 
     // Mengambil pesanan yang sudah dibuat oleh seorang customer
@@ -217,7 +263,7 @@
     }
 
     // Menambah pesanan dengan parameter id merchant
-    function addOrder($id_merchant){
+    function addOrder(){
         $core = Core::getInstance();
 
         $length = 5;
@@ -233,13 +279,12 @@
 
         $id_order = date("YmdHis") . "-" . $addition; //20 karakter
 
-        $query = "INSERT INTO `order` (`id_order`, `waktu_order`, `id_merchant`) VALUES (?,?,?)";
+        $query = "INSERT INTO `order` (`id_order`, `waktu_order`) VALUES (?,?)";
         if($insert_stmt = $core->dbh->prepare($query)){
             $null = null;
 
             $insert_stmt->bindParam('1', $id_order);
             $insert_stmt->bindParam('2', $null);
-            $insert_stmt->bindParam('3', $id_merchant);
 
             if(!$insert_stmt->execute()){
                 return null;
@@ -281,13 +326,13 @@
     function updateCustomerOrder($id_order, $id_customer){
       $core = Core::getInstance();
 
-      $query = "UPDATE `order` SET `id_customer`=:id_customer WHERE `id_order`=:id_order";
+      $query = "UPDATE `order` SET `id_customer`= :id_customer WHERE `id_order`= :id_order";
 
-      if($insert_stmt = $core->dbh->prepare($query)){
-          $insert_stmt->bindParam('id_customer', $id_customer);
-          $insert_stmt->bindParam('id_order', $id_order);
+      if($update_stmt = $core->dbh->prepare($query)){
+          $update_stmt->bindParam('id_customer', $id_customer);
+          $update_stmt->bindParam('id_order', $id_order);
 
-          if(!$insert_stmt->execute()){
+          if(!$update_stmt->execute()){
               return false;
           }
           else{
@@ -298,6 +343,29 @@
           return false;
       }
     }
+
+        // Mengupdate informasi pesanan dari belum dibayar
+    // menjadi sudah dibayar
+    function updateMerchantOrder($id_order, $id_merchant){
+        $core = Core::getInstance();
+  
+        $query = "UPDATE `order` SET `id_merchant`= :id_merchant WHERE `id_order`= :id_order";
+  
+        if($update_stmt = $core->dbh->prepare($query)){
+            $update_stmt->bindParam('id_merchant', $id_merchant);
+            $update_stmt->bindParam('id_order', $id_order);
+  
+            if(!$update_stmt->execute()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+      }
 
 
 ?>

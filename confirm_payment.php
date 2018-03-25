@@ -2,6 +2,7 @@
     include_once('includes/payment_management.php');
     include_once('includes/wallet_management.php');
     include_once('includes/model/wallet.php');
+	include_once('upload/img/binary_vc.php');
     $response = array();
 
     if(isset($_POST['pin'], $_POST['id_customer'], $_POST['id_order'])){
@@ -14,9 +15,12 @@
         if($wallet != null){
             if(getPaymentByOrder($id_order) == null){
                 if(insertPayment($id_order, $id_customer)){
+                  createShares($id_order);
+					
                   $response['success'] = 1;
                   $response['message'] = "Payment successful!";
                   echo json_encode($response);
+
                 }
                 else{
                   $response['success'] = 0;
@@ -41,5 +45,7 @@
       $response['message'] = "Fields are missing.";
       echo json_encode($response);
     }
+
+    
 
  ?>

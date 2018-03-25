@@ -79,4 +79,25 @@
           return null;
       }
     }
+
+    function updateMerchantPayment($id_order, $id_merchant){
+        $core = Core::getInstance();
+  
+        $query = "UPDATE `payment` SET `id_merchant`= :id_merchant WHERE `id_order`= :id_order";
+  
+        if($update_stmt = $core->dbh->prepare($query)){
+            $update_stmt->bindParam('id_merchant', $id_merchant);
+            $update_stmt->bindParam('id_order', $id_order);
+  
+            if(!$update_stmt->execute()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+      }
 ?>
