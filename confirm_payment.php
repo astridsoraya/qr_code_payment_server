@@ -2,6 +2,10 @@
     include_once('includes/payment_management.php');
     include_once('includes/wallet_management.php');
     include_once('includes/order_management.php');
+
+    include_once('includes/model/user.php');
+    include_once('includes/model/customer.php');
+    include_once('includes/model/merchant.php');
     include_once('includes/model/wallet.php');
     include_once('includes/model/order.php');
 

@@ -10,7 +10,7 @@
     function getOrder($id_order){
         $core = Core::getInstance();
 
-        $query = "SELECT `id_order`, `waktu_order`, `id_merchant` FROM `order` WHERE `id_order` = :id_order";
+        $query = "SELECT `id_order`, `waktu_order`, `id_merchant`, `id_customer` FROM `order` WHERE `id_order` = :id_order";
         $order;
 
         if ($stmt = $core->dbh->prepare($query)){
@@ -21,8 +21,9 @@
             $fetched_id_order = $item[0];
             $waktu_order = $item[1];
             $id_merchant = $item[2];
+            $id_customer = $item[3];
 
-            $order = new Order($fetched_id_order, $waktu_order, $id_merchant);
+            $order = new Order($fetched_id_order, $waktu_order, $id_merchant, $id_customer);
         }
 
         return $order;
