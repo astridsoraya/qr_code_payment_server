@@ -17,9 +17,9 @@
                 $handphone_number = $merchant[2];
                 $digital_certificate = $merchant[3];
 
-                array_push($item_list, array(
+                array_push($merchants_list, array(
                     "merchant_name" => $merchant_name,
-                    "adress" => $address,
+                    "address" => $address,
                     "handphone_number" => $handphone_number,
                     "digital_certificate" => $digital_certificate));
             }
