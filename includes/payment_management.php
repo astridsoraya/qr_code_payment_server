@@ -7,7 +7,7 @@
 
   // Menambah pembayaran yang dilakukan saat pelanggan melakukan
   // konfirmasi pembayaran
-  function insertPayment($id_order, $id_customer){
+  function insertPayment($id_order, $id_customer, $id_merchant){
       $core = Core::getInstance();
 
       $length = 5;
@@ -20,7 +20,6 @@
     	}
 
       $id_payment = date("YmdHis") . "-" . $addition; //20 karakter
-      $order = getOrder($id_order);
 
       $query = "INSERT INTO `payment` (`id_payment`, `waktu_bayar`, `id_customer`, `id_merchant`, `id_order`) VALUES (?,?,?,?,?)";
       if($insert_stmt = $core->dbh->prepare($query)){
@@ -29,7 +28,7 @@
           $insert_stmt->bindParam('1', $id_payment);
           $insert_stmt->bindParam('2', $null);
           $insert_stmt->bindParam('3', $id_customer);
-          $insert_stmt->bindParam('4', $null);
+          $insert_stmt->bindParam('4', $id_merchant);
           $insert_stmt->bindParam('5', $id_order);
 
           if(!$insert_stmt->execute()){
