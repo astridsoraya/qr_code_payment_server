@@ -10,7 +10,7 @@
     function getOrder($id_order){
         $core = Core::getInstance();
 
-        $query = "SELECT `id_order`, `waktu_order`, `id_merchant`, `id_customer` FROM `order` WHERE `id_order` = :id_order";
+        $query = "SELECT `id_order`, `waktu_order`, `id_merchant`, `id_customer`, `mutual_auth` FROM `order` WHERE `id_order` = :id_order";
         $order;
 
         if ($stmt = $core->dbh->prepare($query)){
@@ -22,8 +22,9 @@
             $waktu_order = $item[1];
             $id_merchant = $item[2];
             $id_customer = $item[3];
+            $mutual_auth = $item[4];
 
-            $order = new Order($fetched_id_order, $waktu_order, $id_merchant, $id_customer);
+            $order = new Order($fetched_id_order, $waktu_order, $id_merchant, $id_customer, $mutual_auth);
         }
 
         return $order;
@@ -190,13 +191,15 @@
         }
 
         $id_order = date("YmdHis") . "-" . $addition; //20 karakter
+        $mutual_auth = "in progress";
 
-        $query = "INSERT INTO `order` (`id_order`, `waktu_order`) VALUES (?,?)";
+        $query = "INSERT INTO `order` (`id_order`, `waktu_order`, `mutual_auth`) VALUES (?,?,?)";
         if($insert_stmt = $core->dbh->prepare($query)){
             $null = null;
 
             $insert_stmt->bindParam('1', $id_order);
             $insert_stmt->bindParam('2', $null);
+            $insert_stmt->bindParam('3', $mutual_auth);
 
             if(!$insert_stmt->execute()){
                 return null;
@@ -279,5 +282,24 @@
         }
       }
 
-
+      function updateMutualAuth($id_order, $mutual_auth){
+        $core = Core::getInstance();
+  
+        $query = "UPDATE `order` SET `mutual_auth` = :mutual_auth WHERE `id_order`= :id_order";
+  
+        if($update_stmt = $core->dbh->prepare($query)){
+            $update_stmt->bindParam('mutual_auth', $mutual_auth);
+            $update_stmt->bindParam('id_order', $id_order);
+  
+            if(!$update_stmt->execute()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else{
+            return false;
+        }
+      }
 ?>

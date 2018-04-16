@@ -3,12 +3,10 @@
 
     $response = array();
 
-    if(isset($_POST['id_order'], $_POST['user_type'])){
+    if(isset($_POST['id_order'], $_POST['id_customer'])){
         $id_order = $_POST['id_order'];
-        $user_type = $_POST['user_type'];
-
-        if($user_type == "customer"){
-            if(updateCustomerOrder($id_order, "0") && updateMerchantOrder($id_order, "0")){
+        $id_customer = $_POST['id_customer'];
+            if(updateCustomerOrder($id_order, $id_customer) && updateMutualAuth($id_order, "failed")){
                 $response["success"] = 1;
                 $response["message"] = "Order was cancelled by customer";
             }
@@ -16,9 +14,9 @@
                 $response["success"] = 0;
                 $response["message"] = "System failed to cancel the order";
             }
-        }
-        else if($user_type == "merchant"){
-            if(updateMerchantOrder($id_order, "0")){
+    }
+    else if(isset($_POST['id_order'], $_POST['id_merchant'])){
+            if(updateMerchantOrder($id_order, $id_merchant) && updateMutualAuth($id_order, "failed")){
                 $response["success"] = 1;
                 $response["message"] = "Order was cancelled by merchant";
             }
@@ -26,12 +24,6 @@
                 $response["success"] = 0;
                 $response["message"] = "System failed to cancel the order";
             }
-        }
     }
-    else{
-        $response["success"] = 0;
-        $response["message"] = "Field is missing.";
-    }
-
     echo json_encode($response);
 ?>

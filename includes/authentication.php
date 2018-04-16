@@ -12,7 +12,7 @@
 
         $merchantVerification = array();
 
-        $query = "SELECT `order`.`id_order`, `order`.`id_merchant`, `nama_barang`, `harga`, `kuantitas` FROM `order`
+        $query = "SELECT `order`.`id_order`, `order`.`id_merchant`, `mutual_auth`, `nama_barang`, `harga`, `kuantitas` FROM `order`
         INNER JOIN `order_items` ON `order`.`id_order` = `order_items`.`id_order` INNER JOIN `barang`
         ON `order_items`.`id_barang` = `barang`.`id_barang` WHERE `order`.`id_order` = :id_order";
 
@@ -25,14 +25,15 @@
            foreach($order_items as $order_item){
                 $temp_id_order = $order_item[0];
                 $id_merchant_order = $order_item[1];
-                $nama_barang = $order_item[2];
-                $harga = $order_item[3];
-                $kuantitas = $order_item[4];
+                $mutual_auth = $order_item[2];
+                $nama_barang = $order_item[3];
+                $harga = $order_item[4];
+                $kuantitas = $order_item[5];
 
                 $merchant = getMerchantByID($id_merchant);
                 $merchant_name = $merchant->getMerchantName();
 
-                if($id_merchant_order == NULL){
+                if($id_merchant_order == NULL && $mutual_auth == "in progress"){
                     array_push($merchantVerification, array(
                         "id_order" => $temp_id_order,
                         "nama_merchant" => $merchant_name,
@@ -56,6 +57,7 @@
 
             if($checker){
                 updateMerchantOrder($temp_id_order, $id_merchant);
+                updateMutualAuth($temp_id_order, "success");
             }
 
             return $merchantVerification;
@@ -72,7 +74,7 @@
         $core = Core::getInstance();
 
         $customerVerification = array();
-        $query = "SELECT `id_order`, `id_customer`, `waktu_order` FROM `order` WHERE `id_order` = :id_order";
+        $query = "SELECT `id_order`, `id_customer`, `waktu_order`, `mutual_auth` FROM `order` WHERE `id_order` = :id_order";
 
         if ($stmt = $core->dbh->prepare($query)){
             $stmt->bindParam('id_order', $id_order);
@@ -81,8 +83,9 @@
             $temp_id_order = $customer_order[0];
             $id_customer_order = $customer_order[1];
             $waktu_order = $customer_order[2];
+            $mutual_auth = $customer_order[3];
 
-            if($id_customer_order == NULL){
+            if($id_customer_order == NULL && $mutual_auth == "in progress"){
                 $customer = getCustomerByID($id_customer);
                 $customer_username = $customer->getUsername();
                 $customer_name = $customer->getFirstName() . " " . $customer->getLastName();

@@ -27,7 +27,14 @@
                     echo json_encode($response);
                 }
 
-                else if($temp_id_customer == $id_customer && insertPayment($id_order, $id_customer, $id_merchant)){
+                else if($order->getMutualAuth() != "success"){
+                    $response['success'] = 0;
+                    $response['message'] = "Mau nipu ya, bang?";
+                }
+
+                else if($temp_id_customer == $id_customer 
+                && $order->getMutualAuth() == "success"
+                && insertPayment($id_order, $id_customer, $id_merchant)){
                     $wallet = loginWallet($id_customer, $pin);
 
                     if($wallet != null){
@@ -41,6 +48,7 @@
                         echo json_encode($response);
                     }
                 }
+
                 else{
                   $response['success'] = 0;
                   $response['message'] = "System failed to confirm payment.";

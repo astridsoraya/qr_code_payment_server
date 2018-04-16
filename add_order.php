@@ -4,7 +4,7 @@
     include_once('includes/model/order.php');
 
     $response = array();
-
+    
     $order = addOrder();
     $id_order = $order->getIdOrder();
 
