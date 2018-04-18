@@ -7,11 +7,11 @@
 
     $response = array();
 
-    if(isset($_POST['email_address'], $_POST['password'])){
-        $email_address = filter_input(INPUT_POST, 'email_address', FILTER_SANITIZE_EMAIL);
+    if(isset($_POST['credential'], $_POST['password'])){
+        $credential = filter_input(INPUT_POST, 'credential', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'];
-        $userByEmail = loginByEmail($email_address, $password);
-        $userByUsername = loginByUsername($username, $password);
+        $userByEmail = loginByEmail($credential, $password);
+        $userByUsername = loginByUsername($credential, $password);
 
         if ($userByEmail != null) {
             // Login success

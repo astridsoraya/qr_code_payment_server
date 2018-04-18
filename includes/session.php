@@ -5,7 +5,7 @@
     include_once('model/customer.php');
 
     // Meregistrasi customer
-    function registerCustomer($username, $first_name, $last_name, $email_address, $password, $no_handphone){
+    function registerCustomer($first_name, $last_name, $username, $email_address, $password, $no_handphone){
         $core = Core::getInstance();
         if(getCustomer($email_address) == null){
             $date = date_create();
@@ -15,13 +15,13 @@
             ];
             $hashed_password = password_hash($password, PASSWORD_BCRYPT, $options);
 
-            $query = "INSERT INTO customer (id_customer, username, first_name, last_name, email_address, password, handphone_number, digital_certificate) VALUES (?, ?, ?, ?, ?, ?,?)";
+            $query = "INSERT INTO customer (id_customer, first_name, last_name, username, email_address, password, handphone_number, digital_certificate) VALUES (?,?,?,?,?,?,?,?)";
 			      $myNull = null;
             if($insert_stmt = $core->dbh->prepare($query)){
                 $insert_stmt->bindParam('1', $id_customer);
-                $insert_stmt->bindParam('2', $username);
-                $insert_stmt->bindParam('3', $first_name);
-                $insert_stmt->bindParam('4', $last_name);
+                $insert_stmt->bindParam('2', $first_name);
+                $insert_stmt->bindParam('3', $last_name);
+                $insert_stmt->bindParam('4', $username);
                 $insert_stmt->bindParam('5', $email_address);
                 $insert_stmt->bindParam('6', $hashed_password);
                 $insert_stmt->bindParam('7', $no_handphone);
@@ -41,7 +41,7 @@
     }
 
     // Meregistrasi merchant
-    function registerMerchant($username, $merchant_name, $email_address, $password, $address, $no_handphone){
+    function registerMerchant($merchant_name, $username, $email_address, $password, $address, $no_handphone){
         $core = Core::getInstance();
         if(getMerchant($email_address) == null){
             $date = date_create();
@@ -51,16 +51,16 @@
             ];
             $hashed_password = password_hash($password, PASSWORD_BCRYPT, $options);
 
-            $query = "INSERT INTO merchant (id_merchant, username, merchant_name, email_address, password, address, handphone_number, digital_certificate) VALUES (?, ?, ?, ?, ?, ?,?)";
+            $query = "INSERT INTO merchant (id_merchant, merchant_name, username, email_address, password, address, handphone_number, digital_certificate) VALUES (?,?,?,?,?,?,?,?)";
             if($insert_stmt = $core->dbh->prepare($query)){
                 $insert_stmt->bindParam('1', $id_merchant);
-                $insert_stmt->bindParam('2', $username);
-                $insert_stmt->bindParam('3', $merchant_name);
+                $insert_stmt->bindParam('2', $merchant_name);
+                $insert_stmt->bindParam('3', $username);
                 $insert_stmt->bindParam('4', $email_address);
                 $insert_stmt->bindParam('5', $hashed_password);
                 $insert_stmt->bindParam('6', $address);
                 $insert_stmt->bindParam('7', $no_handphone);
-				        $insert_stmt->bindParam('8', $myNull);
+				$insert_stmt->bindParam('8', $myNull);
 
                 if(!$insert_stmt->execute()){
                     return false;

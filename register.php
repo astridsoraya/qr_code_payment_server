@@ -13,7 +13,7 @@
         $password = $_POST['password'];
         $handphone_number = $_POST['handphone_number'];
 
-        if(registerCustomer($username, $first_name, $last_name, $email_address, $password, $handphone_number)){
+        if(registerCustomer($first_name, $last_name, $username, $email_address, $password, $handphone_number)){
             $response["success"] = 1;
             $response["message"] = "Account successfully created!";
 
@@ -29,13 +29,13 @@
     else if(isset($_POST['merchant_name'], $_POST['username'], $_POST['email_address'], $_POST['password'], 
         $_POST['address'], $_POST['handphone_number'])){
         $username = $_POST['username'];
-        $first_name = $_POST['merchant_name'];
+        $merchant_name = $_POST['merchant_name'];
         $email_address = filter_input(INPUT_POST, 'email_address', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'];
         $address = $_POST['address'];
         $handphone_number = $_POST['handphone_number'];
 
-        if(registerMerchant($username, $first_name, $email_address, $password, $address, $handphone_number)){
+        if(registerMerchant($merchant_name, $username, $email_address, $password, $address, $handphone_number)){
             $response["success"] = 1;
             $response["message"] = "Account successfully created!";
 
