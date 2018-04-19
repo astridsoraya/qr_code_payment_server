@@ -42,14 +42,16 @@
                         "kuantitas" => $kuantitas));
                 }
                 else if($id_merchant_order == $id_merchant){
-                    $merchantVerification["success"] = "-1";
-                    $merchantVerification["message"] = "This order is already done before! Returning to main menu...";
+                    array_push($merchantVerification, array(
+                        "success" => "-1",
+                        "message" => "This order is already done before! Returning to main menu..."));
                     $checker = false;
                     break;
                 }
                 else{
-                    $merchantVerification["success"] = "-1";
-                    $merchantVerification["message"] = "THIIIIIIIIIIIIIEEEFFFFFFFFFFFFF!!!!";
+                    array_push($merchantVerification, array(
+                        "success" => "-1",
+                        "message" => "Penjual ini sedang menipu Anda!!"));
                     $checker = false;
                     break;
                 }
@@ -110,7 +112,7 @@
 
             else{
                 $customerVerification["success"] = "-1";
-                $customerVerification["message"] = "THIIIIIIIIIIIIIEEEFFFFFFFFFFFFF!!!!";
+                $customerVerification["message"] = "Pembeli ini sedang menipu Anda!!";
             }
             return $customerVerification;
         }

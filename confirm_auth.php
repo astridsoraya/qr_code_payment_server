@@ -1,9 +1,11 @@
 <?php
     include_once('includes/session.php');
     include_once('includes/authentication.php');
+    include_once('includes/order_management.php');
     include_once('includes/model/merchant.php');
     include_once('includes/model/user.php');
     include_once('includes/model/customer.php');
+    include_once('includes/model/order.php');
 
     $response = array();
 
@@ -39,6 +41,31 @@
                 echo json_encode($response);
             }
         }
+    }
+    else if(isset($_POST['id_order'], $_POST['user_type'])){   
+        $order = getOrder($id_order);
+        $user_type = $_POST['user_type'];
+        if($user_type == "customer"){
+            if($order->getIdCustomer() == NULL){
+                $response['success'] = "-1";
+                $response['message'] = "Customer has not been authenticated! Returning to main menu...";
+            }
+            else{
+                $response['success'] = "1";
+                $response['message'] = "The customer has been authenticated.";
+            }
+        }
+        else if($user_type == "merchant"){
+            if($order->getIdMerchant() == NULL){
+                $response['success'] = "-1";
+                $response['message'] = "The merchant has not been authenticated! Returning to main menu...";
+            }
+            else{
+                $response['success'] = "1";
+                $response['message'] = "The customer has been authenticated.";
+            }
+        }
+
     }
     else{
         $response['success'] = 0;

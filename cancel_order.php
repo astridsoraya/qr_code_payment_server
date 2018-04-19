@@ -16,6 +16,8 @@
             }
     }
     else if(isset($_POST['id_order'], $_POST['id_merchant'])){
+        $id_order = $_POST['id_order'];
+        $id_merchant = $_POST['id_merchant'];
             if(updateMerchantOrder($id_order, $id_merchant) && updateMutualAuth($id_order, "failed")){
                 $response["success"] = 1;
                 $response["message"] = "Order was cancelled by merchant";
