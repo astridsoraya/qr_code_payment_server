@@ -14,6 +14,7 @@
                 'cost' => 12,
             ];
             $hashed_password = password_hash($password, PASSWORD_BCRYPT, $options);
+            $digital_certificate = $email_address . ".crt";
 
             $query = "INSERT INTO customer (id_customer, first_name, last_name, username, email_address, password, handphone_number, digital_certificate) VALUES (?,?,?,?,?,?,?,?)";
 			      $myNull = null;
@@ -25,7 +26,7 @@
                 $insert_stmt->bindParam('5', $email_address);
                 $insert_stmt->bindParam('6', $hashed_password);
                 $insert_stmt->bindParam('7', $no_handphone);
-				$insert_stmt->bindParam('8', $myNull);
+				$insert_stmt->bindParam('8', $digital_certificate);
                 if(!$insert_stmt->execute()){
                     return false;
                 }
@@ -50,6 +51,7 @@
                 'cost' => 12,
             ];
             $hashed_password = password_hash($password, PASSWORD_BCRYPT, $options);
+            $digital_certificate = $email_address . ".crt";
 
             $query = "INSERT INTO merchant (id_merchant, merchant_name, username, email_address, password, address, handphone_number, digital_certificate) VALUES (?,?,?,?,?,?,?,?)";
             if($insert_stmt = $core->dbh->prepare($query)){
@@ -60,7 +62,7 @@
                 $insert_stmt->bindParam('5', $hashed_password);
                 $insert_stmt->bindParam('6', $address);
                 $insert_stmt->bindParam('7', $no_handphone);
-				$insert_stmt->bindParam('8', $myNull);
+				$insert_stmt->bindParam('8', $digital_certificate);
 
                 if(!$insert_stmt->execute()){
                     return false;
